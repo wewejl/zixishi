@@ -1,0 +1,17 @@
+{
+  "name": "静谧空间",
+  "appid": "__UNI__ZIXISHI",
+  "description": "自习室预约与门禁管理",
+  "versionName": "0.1.0",
+  "versionCode": "100",
+  "transformPx": false,
+  "h5": {
+    "title": "静谧空间"
+  },
+  "mp-weixin": {
+    "appid": "",
+    "setting": {
+      "urlCheck": false
+    }
+  }
+}

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 480" role="img" aria-label="Quiet pod study seat">
+  <defs>
+    <linearGradient id="pod" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#263852"/>
+      <stop offset=".6" stop-color="#101d2e"/>
+      <stop offset="1" stop-color="#07111d"/>
+    </linearGradient>
+    <linearGradient id="felt" x1="0" x2="1">
+      <stop offset="0" stop-color="#30435d"/>
+      <stop offset="1" stop-color="#17253a"/>
+    </linearGradient>
+    <radialGradient id="lamp" cx=".52" cy=".39" r=".36">
+      <stop offset="0" stop-color="#ffe9b2" stop-opacity=".95"/>
+      <stop offset=".45" stop-color="#e6c181" stop-opacity=".32"/>
+      <stop offset="1" stop-color="#e6c181" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="720" height="480" fill="url(#pod)"/>
+  <path d="M66 70h588v314H66z" fill="url(#felt)" opacity=".95"/>
+  <g opacity=".22" stroke="#d7e2ff" stroke-width="2">
+    <path d="M116 70v314M166 70v314M216 70v314M266 70v314M316 70v314M366 70v314M416 70v314M466 70v314M516 70v314M566 70v314M616 70v314"/>
+  </g>
+  <circle cx="382" cy="206" r="230" fill="url(#lamp)"/>
+  <rect x="132" y="318" width="456" height="54" rx="18" fill="#fbf9f9"/>
+  <rect x="168" y="367" width="24" height="88" rx="10" fill="#c9c1b6"/>
+  <rect x="526" y="367" width="24" height="88" rx="10" fill="#c9c1b6"/>
+  <path d="M330 314h116" stroke="#f3e0c0" stroke-width="9" stroke-linecap="round"/>
+  <path d="M388 310v-80" stroke="#f3e0c0" stroke-width="9" stroke-linecap="round"/>
+  <ellipse cx="388" cy="214" rx="58" ry="28" fill="#f3e0c0"/>
+  <path d="M454 322c46-36 92-24 126 8" fill="none" stroke="#0b1322" stroke-width="16" stroke-linecap="round"/>
+  <rect x="540" y="298" width="90" height="72" rx="36" fill="#0d1727"/>
+  <path d="M66 384h588v96H66z" fill="#020912" opacity=".34"/>
+</svg>

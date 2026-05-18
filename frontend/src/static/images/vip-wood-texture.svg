@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" role="img" aria-label="Dark walnut wood texture">
+  <defs>
+    <linearGradient id="walnut" x1="0" x2="1">
+      <stop offset="0" stop-color="#17120e"/>
+      <stop offset=".3" stop-color="#3b281b"/>
+      <stop offset=".58" stop-color="#201712"/>
+      <stop offset="1" stop-color="#5a3822"/>
+    </linearGradient>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency=".018 .16" numOctaves="4" seed="12"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncA type="table" tableValues=".18 .32"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="900" height="520" fill="url(#walnut)"/>
+  <rect width="900" height="520" filter="url(#grain)" opacity=".55"/>
+  <g fill="none" stroke-linecap="round">
+    <path d="M-30 86c130-44 221 46 356 5 134-41 225-86 350-20 96 50 166 30 254-18" stroke="#d6a66b" stroke-opacity=".18" stroke-width="18"/>
+    <path d="M-20 174c150-28 224 34 344 8 118-25 202-82 332-32 110 42 185 26 274-28" stroke="#f0c487" stroke-opacity=".12" stroke-width="10"/>
+    <path d="M-12 270c126-62 238 16 350-22 132-45 220-62 330-4 92 48 160 34 250-6" stroke="#0b0705" stroke-opacity=".38" stroke-width="22"/>
+    <path d="M-28 388c180-58 260 40 396 0 120-36 230-74 358 2 82 48 132 34 210-8" stroke="#e7b678" stroke-opacity=".11" stroke-width="14"/>
+  </g>
+  <rect width="900" height="520" fill="#0b0e14" opacity=".24"/>
+</svg>

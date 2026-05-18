@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 480" role="img" aria-label="Window seat desk">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fff5df"/>
+      <stop offset=".52" stop-color="#e9edf0"/>
+      <stop offset="1" stop-color="#b7c7d1"/>
+    </linearGradient>
+    <linearGradient id="wood" x1="0" x2="1">
+      <stop offset="0" stop-color="#efcf99"/>
+      <stop offset=".6" stop-color="#c18e58"/>
+      <stop offset="1" stop-color="#8f6848"/>
+    </linearGradient>
+    <radialGradient id="light" cx=".2" cy=".15" r=".65">
+      <stop offset="0" stop-color="#fff7c8" stop-opacity=".9"/>
+      <stop offset=".7" stop-color="#f1c37d" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="720" height="480" fill="url(#bg)"/>
+  <circle cx="142" cy="76" r="260" fill="url(#light)"/>
+  <rect x="48" y="48" width="252" height="286" rx="14" fill="#fbf9f9" opacity=".96"/>
+  <rect x="70" y="70" width="88" height="238" rx="5" fill="#d9e9ef"/>
+  <rect x="178" y="70" width="100" height="238" rx="5" fill="#edf4f4"/>
+  <path d="M166 70v238M70 196h208" stroke="#fbf9f9" stroke-width="10"/>
+  <rect y="330" width="720" height="150" fill="#caa171"/>
+  <path d="M0 364c108-18 228-18 358 4s252 18 362-12v124H0z" fill="#9c744e" opacity=".35"/>
+  <rect x="192" y="286" width="430" height="42" rx="16" fill="url(#wood)"/>
+  <rect x="230" y="326" width="24" height="118" rx="9" fill="#725236"/>
+  <rect x="574" y="326" width="24" height="118" rx="9" fill="#725236"/>
+  <rect x="350" y="260" width="122" height="20" rx="10" fill="#031632" opacity=".14"/>
+  <path d="M444 276c68-34 126-16 172 26" fill="none" stroke="#25324a" stroke-width="14" stroke-linecap="round"/>
+  <rect x="560" y="266" width="80" height="62" rx="31" fill="#1a2b48"/>
+</svg>

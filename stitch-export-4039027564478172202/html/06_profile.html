@@ -1,0 +1,291 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Quiet Focus - Profile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed-dim": "#d6c4a5",
+                      "surface-container": "#efeded",
+                      "outline-variant": "#c5c6ce",
+                      "primary-fixed": "#d7e2ff",
+                      "error": "#ba1a1a",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container-high": "#e9e8e7",
+                      "on-primary": "#ffffff",
+                      "on-primary-container": "#8293b5",
+                      "secondary-fixed": "#f3e0c0",
+                      "tertiary-container": "#2b2b28",
+                      "on-background": "#1b1c1c",
+                      "background": "#fbf9f9",
+                      "on-primary-fixed-variant": "#374765",
+                      "secondary-container": "#f0debd",
+                      "surface-bright": "#fbf9f9",
+                      "on-primary-fixed": "#081b38",
+                      "secondary": "#6a5d43",
+                      "on-surface-variant": "#44474d",
+                      "surface-dim": "#dbdad9",
+                      "surface-variant": "#e4e2e2",
+                      "primary-fixed-dim": "#b6c7eb",
+                      "error-container": "#ffdad6",
+                      "on-error-container": "#93000a",
+                      "surface-container-low": "#f5f3f3",
+                      "on-secondary": "#ffffff",
+                      "inverse-primary": "#b6c7eb",
+                      "on-secondary-fixed-variant": "#51452d",
+                      "surface-tint": "#4e5f7e",
+                      "surface-container-highest": "#e4e2e2",
+                      "surface": "#fbf9f9",
+                      "on-surface": "#1b1c1c",
+                      "primary-container": "#1a2b48",
+                      "primary": "#031632",
+                      "tertiary": "#161714",
+                      "on-tertiary-fixed": "#1b1c19",
+                      "outline": "#75777e",
+                      "on-tertiary-container": "#93928e",
+                      "on-error": "#ffffff",
+                      "tertiary-fixed-dim": "#c8c6c2",
+                      "inverse-surface": "#303031",
+                      "inverse-on-surface": "#f2f0f0",
+                      "on-secondary-fixed": "#231a06",
+                      "on-secondary-container": "#6e6147",
+                      "on-tertiary": "#ffffff",
+                      "tertiary-fixed": "#e4e2dd",
+                      "on-tertiary-fixed-variant": "#474744"
+              },
+              "borderRadius": {
+                      "DEFAULT": "1rem",
+                      "lg": "2rem",
+                      "xl": "3rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "section-gap": "48px",
+                      "container-margin-desktop": "64px",
+                      "unit": "8px",
+                      "gutter": "16px",
+                      "container-margin-mobile": "24px"
+              },
+              "fontFamily": {
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "label-sm": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.03em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "0em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "letterSpacing": "0.01em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "36px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "letterSpacing": "0.01em",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-[#F9F7F2] text-on-background min-h-screen pb-[100px] md:pb-0 pt-16">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-40 hidden md:flex justify-between items-center px-container-margin-desktop h-16 bg-surface/80 dark:bg-surface/80 backdrop-blur-md flat no shadows">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary cursor-pointer hover:opacity-80 transition-opacity">menu</span>
+<span class="text-headline-md font-headline-md font-semibold tracking-tight text-primary dark:text-primary-fixed">静谧空间</span>
+</div>
+<div class="flex items-center gap-8">
+<nav class="flex gap-6">
+<a class="text-label-md font-label-md text-on-surface-variant dark:text-on-surface-variant hover:opacity-80 transition-opacity" href="#">首页</a>
+<a class="text-label-md font-label-md text-on-surface-variant dark:text-on-surface-variant hover:opacity-80 transition-opacity" href="#">预约</a>
+<a class="text-label-md font-label-md text-on-surface-variant dark:text-on-surface-variant hover:opacity-80 transition-opacity" href="#">扫码</a>
+<a class="text-label-md font-label-md text-on-surface-variant dark:text-on-surface-variant hover:opacity-80 transition-opacity" href="#">商城</a>
+<a class="text-label-md font-label-md text-primary dark:text-primary-fixed hover:opacity-80 transition-opacity" href="#">我的</a>
+</nav>
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-variant">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A close-up portrait of a young person in soft, warm indoor lighting. The aesthetic is clean and modern, fitting a high-end minimalist design system. The background is softly blurred, focusing entirely on the subject." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnCRawV7SlsOoP4JlSUFhMApUYMW3zO-JlBBFCrjd6TVwZTxQSMAhctKuoFMwsxBXYQMb_4EDfzuJxBRuw2GWlJfS_vMJLT7h0YCwBKeQ-AUtCOQb9XWnr3jExWV0hXEgHg6vK9HELWAyqxK5-zmazUiwDmcnFkDoagdLTL-TPs82ubr1obaFdy1QhAG2s3UHzora0D9p9v4gje2DOHlY_q3ymWXjNk9rE6C1aroWag3dlXYX9OXt-xYHVmkmW9IfCimrsCyiEUQw">
+</div>
+</div>
+</header>
+<!-- Mobile Top Header (Implicit from requirements) -->
+<div class="md:hidden flex justify-center items-center h-16 w-full fixed top-0 bg-[#F9F7F2]/90 backdrop-blur-md z-40">
+<span class="text-headline-md font-headline-md font-semibold tracking-tight text-primary">静谧空间</span>
+</div>
+<!-- Main Content Canvas -->
+<main class="max-w-3xl mx-auto px-container-margin-mobile md:px-0 mt-8 md:mt-24 flex flex-col gap-section-gap">
+<!-- Profile Header Section -->
+<section class="flex flex-col items-center md:items-start md:flex-row gap-6 p-8 bg-surface-container-lowest rounded-[24px] shadow-[0_10px_40px_rgba(26,43,72,0.05)] hover:shadow-[0_15px_50px_rgba(26,43,72,0.08)] transition-all duration-300">
+<div class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-surface bg-surface-variant shrink-0">
+<img alt="User Avatar" class="w-full h-full object-cover" data-alt="A portrait of a young professional in a softly lit, serene environment. The lighting is warm and natural, casting gentle shadows. The overall mood is calm and focused, reflecting a premium minimalist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuARIu_bfEpW2eHuX6_eLNAtfdmVfPdxDufSnc4ngAoACzAIfHOFgTKvwkYhKiTlWEU1WUH8GWU5klVi1aXUmiK_Jjhk4tDMrJbI6RKufoaMne19eXrEykmGBJGLPxh8k-O9jacSMEx35QZRnIEzd5_zC9XP2YMQ-eXZni33F_lC67kji3IJQWIcbkJnmWutY7MNMTsN_EIeBoP1C346rxoQscQOZym4p9qqDulvceHg1n6IfV6BNQBsL5-S-m0pCOGJ4zabW_WW9m8">
+</div>
+<div class="flex flex-col items-center md:items-start text-center md:text-left flex-grow">
+<h1 class="text-headline-lg-mobile md:text-headline-lg font-headline-lg-mobile md:font-headline-lg text-primary mb-2">陈默</h1>
+<div class="flex items-center gap-2 mb-4">
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-secondary-container/30 text-secondary text-label-sm font-label-sm"><span class="material-symbols-outlined text-[14px] mr-1" data-weight="fill" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>高级会员</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant">专注时长：<span class="text-primary font-semibold">1240 小时</span></p>
+</div>
+</section>
+<!-- Stats Grid (Bento Style) -->
+<section class="grid grid-cols-2 md:grid-cols-3 gap-4">
+<div class="bg-surface-container-lowest p-6 rounded-[24px] shadow-[0_10px_40px_rgba(26,43,72,0.04)] flex flex-col justify-between h-[120px]">
+<span class="text-label-md font-label-md text-on-surface-variant flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">schedule</span> 剩余时长</span>
+<span class="text-headline-md font-headline-md text-primary">42.5 h</span>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-[24px] shadow-[0_10px_40px_rgba(26,43,72,0.04)] flex flex-col justify-between h-[120px]">
+<span class="text-label-md font-label-md text-on-surface-variant flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">military_tech</span> 今日排名</span>
+<span class="text-headline-md font-headline-md text-primary">#12</span>
+</div>
+<div class="col-span-2 md:col-span-1 bg-surface-container-lowest p-6 rounded-[24px] shadow-[0_10px_40px_rgba(26,43,72,0.04)] flex flex-col justify-between h-[120px] md:bg-primary-container md:text-on-primary-container">
+<span class="text-label-md font-label-md text-on-surface-variant md:text-primary-fixed-dim flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">calendar_today</span> 坚持天数</span>
+<span class="text-headline-md font-headline-md text-primary md:text-on-primary">365 天</span>
+</div>
+</section>
+<!-- Menu List (Card-based grouping) -->
+<section class="bg-surface-container-lowest rounded-[24px] shadow-[0_10px_40px_rgba(26,43,72,0.04)] overflow-hidden">
+<div class="flex flex-col">
+<a class="flex items-center justify-between p-6 hover:bg-surface-container-low transition-colors duration-200 border-b border-surface-variant/50 group" href="#">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">receipt_long</span>
+<span class="text-body-md font-body-md text-primary">我的订单</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">chevron_right</span>
+</a>
+<a class="flex items-center justify-between p-6 hover:bg-surface-container-low transition-colors duration-200 border-b border-surface-variant/50 group" href="#">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">fact_check</span>
+<span class="text-body-md font-body-md text-primary">签到记录</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">chevron_right</span>
+</a>
+<a class="flex items-center justify-between p-6 hover:bg-surface-container-low transition-colors duration-200 border-b border-surface-variant/50 group" href="#">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">settings</span>
+<span class="text-body-md font-body-md text-primary">设置</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">chevron_right</span>
+</a>
+<a class="flex items-center justify-between p-6 hover:bg-surface-container-low transition-colors duration-200 group" href="#">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">help</span>
+<span class="text-body-md font-body-md text-primary">帮助中心</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">chevron_right</span>
+</a>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe h-20 bg-surface dark:bg-surface shadow-[0_-10px_40px_rgba(3,22,50,0.04)] rounded-t-lg">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-4 py-1 hover:text-primary dark:hover:text-primary-fixed" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-label-sm font-label-sm mt-1">首页</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-4 py-1 hover:text-primary dark:hover:text-primary-fixed" href="#">
+<span class="material-symbols-outlined">event_seat</span>
+<span class="text-label-sm font-label-sm mt-1">预约</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-4 py-1 hover:text-primary dark:hover:text-primary-fixed" href="#">
+<span class="material-symbols-outlined">qr_code_scanner</span>
+<span class="text-label-sm font-label-sm mt-1">扫码</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-4 py-1 hover:text-primary dark:hover:text-primary-fixed" href="#">
+<span class="material-symbols-outlined">shopping_bag</span>
+<span class="text-label-sm font-label-sm mt-1">商城</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed bg-secondary-container/50 dark:bg-primary-container rounded-xl px-4 py-1 scale-98 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="text-label-sm font-label-sm mt-1">我的</span>
+</a>
+</nav>
+
+
+</body></html>

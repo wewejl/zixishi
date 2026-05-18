@@ -1,0 +1,122 @@
+{
+  "pages": [
+    {
+      "path": "pages/home/index",
+      "style": {
+        "navigationBarTitleText": "静谧空间"
+      }
+    },
+    {
+      "path": "pages/booking/index",
+      "style": {
+        "navigationBarTitleText": "座位预约"
+      }
+    },
+    {
+      "path": "pages/access/index",
+      "style": {
+        "navigationBarTitleText": "智能门禁"
+      }
+    },
+    {
+      "path": "pages/packages/index",
+      "style": {
+        "navigationBarTitleText": "商城"
+      }
+    },
+    {
+      "path": "pages/profile/index",
+      "style": {
+        "navigationBarTitleText": "个人中心"
+      }
+    },
+    {
+      "path": "pages/seat-status/index",
+      "style": {
+        "navigationBarTitleText": "座位状态"
+      }
+    },
+    {
+      "path": "pages/long-term-password/index",
+      "style": {
+        "navigationBarTitleText": "长期通行码"
+      }
+    },
+    {
+      "path": "pages/booking/confirm",
+      "style": {
+        "navigationBarTitleText": "确认预约"
+      }
+    },
+    {
+      "path": "pages/packages/detail",
+      "style": {
+        "navigationBarTitleText": "套餐详情"
+      }
+    },
+    {
+      "path": "pages/orders/index",
+      "style": {
+        "navigationBarTitleText": "订单记录"
+      }
+    },
+    {
+      "path": "pages/login/index",
+      "style": {
+        "navigationBarTitleText": "登录授权"
+      }
+    },
+    {
+      "path": "pages/webview/index",
+      "style": {
+        "navigationBarTitleText": "协议/公告"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationStyle": "custom",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "静谧空间",
+    "navigationBarBackgroundColor": "#fbf9f9",
+    "backgroundColor": "#fbf9f9"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#6b7280",
+    "selectedColor": "#031632",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页",
+        "iconPath": "static/tabbar/home.png",
+        "selectedIconPath": "static/tabbar/home-active.png"
+      },
+      {
+        "pagePath": "pages/booking/index",
+        "text": "预约",
+        "iconPath": "static/tabbar/booking.png",
+        "selectedIconPath": "static/tabbar/booking-active.png"
+      },
+      {
+        "pagePath": "pages/access/index",
+        "text": "控制",
+        "iconPath": "static/tabbar/access.png",
+        "selectedIconPath": "static/tabbar/access-active.png"
+      },
+      {
+        "pagePath": "pages/packages/index",
+        "text": "商城",
+        "iconPath": "static/tabbar/packages.png",
+        "selectedIconPath": "static/tabbar/packages-active.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的",
+        "iconPath": "static/tabbar/profile.png",
+        "selectedIconPath": "static/tabbar/profile-active.png"
+      }
+    ]
+  }
+}

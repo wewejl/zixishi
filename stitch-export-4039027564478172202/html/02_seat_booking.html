@@ -1,0 +1,286 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Quiet Focus - Seat Booking</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#d6c4a5",
+                        "surface-container": "#efeded",
+                        "outline-variant": "#c5c6ce",
+                        "primary-fixed": "#d7e2ff",
+                        "error": "#ba1a1a",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-high": "#e9e8e7",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#8293b5",
+                        "secondary-fixed": "#f3e0c0",
+                        "tertiary-container": "#2b2b28",
+                        "on-background": "#1b1c1c",
+                        "background": "#fbf9f9",
+                        "on-primary-fixed-variant": "#374765",
+                        "secondary-container": "#f0debd",
+                        "surface-bright": "#fbf9f9",
+                        "on-primary-fixed": "#081b38",
+                        "secondary": "#6a5d43",
+                        "on-surface-variant": "#44474d",
+                        "surface-dim": "#dbdad9",
+                        "surface-variant": "#e4e2e2",
+                        "primary-fixed-dim": "#b6c7eb",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f5f3f3",
+                        "on-secondary": "#ffffff",
+                        "inverse-primary": "#b6c7eb",
+                        "on-secondary-fixed-variant": "#51452d",
+                        "surface-tint": "#4e5f7e",
+                        "surface-container-highest": "#e4e2e2",
+                        "surface": "#fbf9f9",
+                        "on-surface": "#1b1c1c",
+                        "primary-container": "#1a2b48",
+                        "primary": "#031632",
+                        "tertiary": "#161714",
+                        "on-tertiary-fixed": "#1b1c19",
+                        "outline": "#75777e",
+                        "on-tertiary-container": "#93928e",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed-dim": "#c8c6c2",
+                        "inverse-surface": "#303031",
+                        "inverse-on-surface": "#f2f0f0",
+                        "on-secondary-fixed": "#231a06",
+                        "on-secondary-container": "#6e6147",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#e4e2dd",
+                        "on-tertiary-fixed-variant": "#474744"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "section-gap": "48px",
+                        "container-margin-desktop": "64px",
+                        "unit": "8px",
+                        "gutter": "16px",
+                        "container-margin-mobile": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "500" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "0em", "fontWeight": "500" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "letterSpacing": "0.01em", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Hide scrollbar for clean UI */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col antialiased selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- TopAppBar -->
+<header class="fixed z-40 bg-surface dark:bg-surface text-primary dark:text-primary-fixed w-full top-0 bg-surface/80 dark:bg-surface/80 backdrop-blur-md flex justify-between items-center px-container-margin-mobile h-16 md:px-container-margin-desktop">
+<button aria-label="Menu" class="text-primary dark:text-primary-fixed hover:opacity-80 transition-opacity flex items-center justify-center p-2 -ml-2 rounded-full hover:bg-surface-variant/50">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h1 class="text-headline-md font-headline-md font-semibold tracking-tight text-primary dark:text-primary-fixed">静谧空间</h1>
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-variant flex items-center justify-center border border-outline-variant/30 hover:opacity-80 transition-opacity cursor-pointer">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="A close up portrait of a young woman with a soft, warm lighting aesthetic, representing a user profile picture in a minimalist interface. The background is a blurred, neutral tone." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBoAjGBiDH4Oy5DpKeLd93dnuT1xJFSvUCHCl4nGQc7Vqozq8BISmw5jeur3nyY1q7nZ1DZo_0IZbaYBaGc2DcLWHOKwsnFKlvtgCpQfEt3fXCmpAVtRLHUPt-gdayvviInCb5BTD9I_2cNmHdTTsG8lx8B3T_9crFKoLcx1EJwaWAbLV35DImQE64i4KOeFXYaw4Ll46kr6JpvCaNBm3DA-u-LcQo5ZLSZGvgXdvWJf3PeeEJw4YM4K_DPRon3e5uPG-WBkwDg69Q">
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow pt-24 pb-32 px-container-margin-mobile md:px-container-margin-desktop max-w-4xl mx-auto w-full flex flex-col gap-section-gap">
+<!-- Header & Filters Section -->
+<section class="flex flex-col gap-6">
+<div class="flex flex-col gap-2">
+<h2 class="text-headline-lg-mobile md:text-headline-lg font-headline-lg-mobile md:font-headline-lg text-primary">选择您的座位</h2>
+<p class="text-body-md font-body-md text-on-surface-variant">寻找最适合您今日学习的静谧环境。</p>
+</div>
+<!-- Horizontal Filter Chips -->
+<div class="flex overflow-x-auto scrollbar-hide gap-3 pb-2 -mx-container-margin-mobile px-container-margin-mobile md:mx-0 md:px-0">
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-on-primary text-label-md font-label-md transition-all"><span class="material-symbols-outlined text-[18px]" data-icon="volume_off">volume_off</span>安静区</button>
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-surface-container-highest text-on-surface-variant hover:bg-surface-variant transition-all text-label-md font-label-md border border-outline-variant/20"><span class="material-symbols-outlined text-[18px]" data-icon="window">window</span>窗边</button>
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-surface-container-highest text-on-surface-variant hover:bg-surface-variant transition-all text-label-md font-label-md border border-outline-variant/20"><span class="material-symbols-outlined text-[18px]" data-icon="power">power</span>插座</button>
+</div>
+</section>
+<!-- Time Selector Section -->
+<section class="flex flex-col gap-4">
+<div class="flex justify-between items-end">
+<h3 class="text-headline-md font-headline-md text-primary">选择时间</h3>
+<span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">今天, 10月24日</span>
+</div>
+<div class="flex overflow-x-auto scrollbar-hide gap-3 pb-4 -mx-container-margin-mobile px-container-margin-mobile md:mx-0 md:px-0 snap-x">
+<button class="snap-start flex flex-col items-center justify-center min-w-[80px] py-4 rounded-2xl bg-surface-container-highest text-on-surface-variant hover:bg-surface-variant border border-transparent transition-all">
+<span class="text-label-md font-label-md text-on-surface-variant/70">上午</span>
+<span class="text-headline-md font-headline-md mt-1">09:00</span>
+</button>
+<button class="snap-start flex flex-col items-center justify-center min-w-[80px] py-4 rounded-2xl bg-secondary-container text-on-secondary-container shadow-[0_4px_12px_rgba(106,93,67,0.15)] scale-105 border border-secondary-fixed transition-all relative">
+<span class="text-label-md font-label-md opacity-80">上午</span>
+<span class="text-headline-md font-headline-md mt-1 font-semibold">10:00</span>
+<div class="absolute -bottom-1 w-1/2 h-1 bg-secondary rounded-t-full"></div>
+</button>
+<button class="snap-start flex flex-col items-center justify-center min-w-[80px] py-4 rounded-2xl bg-surface-container-highest text-on-surface-variant hover:bg-surface-variant border border-transparent transition-all">
+<span class="text-label-md font-label-md text-on-surface-variant/70">上午</span>
+<span class="text-headline-md font-headline-md mt-1">11:00</span>
+</button>
+<button class="snap-start flex flex-col items-center justify-center min-w-[80px] py-4 rounded-2xl bg-surface-container-highest text-on-surface-variant hover:bg-surface-variant border border-transparent transition-all">
+<span class="text-label-md font-label-md text-on-surface-variant/70">下午</span>
+<span class="text-headline-md font-headline-md mt-1">12:00</span>
+</button>
+<button class="snap-start flex flex-col items-center justify-center min-w-[80px] py-4 rounded-2xl bg-surface-container-highest text-on-surface-variant hover:bg-surface-variant border border-transparent transition-all opacity-50 cursor-not-allowed">
+<span class="text-label-md font-label-md text-on-surface-variant/70">下午</span>
+<span class="text-headline-md font-headline-md mt-1 line-through">01:00</span>
+</button>
+<button class="snap-start flex flex-col items-center justify-center min-w-[80px] py-4 rounded-2xl bg-surface-container-highest text-on-surface-variant hover:bg-surface-variant border border-transparent transition-all">
+<span class="text-label-md font-label-md text-on-surface-variant/70">下午</span>
+<span class="text-headline-md font-headline-md mt-1">02:00</span>
+</button>
+</div>
+</section>
+<!-- Seat Map Area ("The Study Pod") -->
+<section class="flex flex-col gap-6">
+<div class="bg-surface-container-lowest rounded-[24px] p-6 md:p-8 shadow-[0_20px_50px_rgba(26,43,72,0.04)] border border-outline-variant/10 flex flex-col items-center gap-8 relative overflow-hidden">
+<!-- Room Element Styling -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-1 bg-outline-variant/20 rounded-b-lg"></div>
+<!-- Legend -->
+<div class="flex flex-wrap justify-center gap-6 w-full pb-4 border-b border-outline-variant/10">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-surface-container-high border border-outline-variant/30"></div>
+<span class="text-label-sm font-label-sm text-on-surface-variant">可选</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-primary"></div>
+<span class="text-label-sm font-label-sm text-on-surface-variant">已约</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-secondary-container border border-secondary/20"></div>
+<span class="text-label-sm font-label-sm text-on-surface-variant">已选</span>
+</div>
+</div>
+<!-- Stylized Map Grid -->
+<div class="grid grid-cols-4 gap-x-4 gap-y-6 w-full max-w-sm mx-auto">
+<!-- Row 1 (Window Side) -->
+<button class="aspect-square rounded-xl bg-surface-container-high border border-outline-variant/20 flex items-center justify-center text-on-surface-variant hover:shadow-md hover:-translate-y-0.5 transition-all relative">
+<span class="text-label-md font-label-md">A1</span>
+</button>
+<button class="aspect-square rounded-xl bg-primary flex items-center justify-center text-on-primary shadow-sm cursor-not-allowed">
+<span class="text-label-md font-label-md">A2</span>
+</button>
+<div class="col-span-1"></div> <!-- Aisle -->
+<button class="aspect-square rounded-xl bg-surface-container-high border border-outline-variant/20 flex items-center justify-center text-on-surface-variant hover:shadow-md hover:-translate-y-0.5 transition-all relative">
+<span class="text-label-md font-label-md">A3</span>
+</button>
+<!-- Row 2 -->
+<button class="aspect-square rounded-xl bg-surface-container-high border border-outline-variant/20 flex items-center justify-center text-on-surface-variant hover:shadow-md hover:-translate-y-0.5 transition-all relative">
+<span class="text-label-md font-label-md">B1</span>
+</button>
+<button class="aspect-square rounded-xl bg-surface-container-high border border-outline-variant/20 flex items-center justify-center text-on-surface-variant hover:shadow-md hover:-translate-y-0.5 transition-all relative">
+<span class="text-label-md font-label-md">B2</span>
+</button>
+<div class="col-span-1"></div> <!-- Aisle -->
+<button class="aspect-square rounded-xl bg-secondary-container border-2 border-secondary text-on-secondary-container shadow-[0_4px_12px_rgba(106,93,67,0.2)] scale-105 transition-all z-10">
+<span class="text-label-md font-label-md font-semibold">B3</span>
+</button>
+<!-- Row 3 -->
+<button class="aspect-square rounded-xl bg-primary flex items-center justify-center text-on-primary shadow-sm cursor-not-allowed">
+<span class="text-label-md font-label-md">C1</span>
+</button>
+<button class="aspect-square rounded-xl bg-surface-container-high border border-outline-variant/20 flex items-center justify-center text-on-surface-variant hover:shadow-md hover:-translate-y-0.5 transition-all relative">
+<span class="text-label-md font-label-md">C2</span>
+</button>
+<div class="col-span-1"></div> <!-- Aisle -->
+<button class="aspect-square rounded-xl bg-primary flex items-center justify-center text-on-primary shadow-sm cursor-not-allowed">
+<span class="text-label-md font-label-md">C3</span>
+</button>
+</div>
+<!-- Bottom Desk Indicator -->
+<div class="w-2/3 h-1.5 bg-outline-variant/20 rounded-full mt-4"></div>
+</div>
+</section>
+</main>
+<!-- Fixed Action Area (Mobile specific behavior, floats on desktop) -->
+<div class="fixed bottom-[80px] md:bottom-6 left-0 w-full px-container-margin-mobile md:px-container-margin-desktop z-40 flex justify-center pointer-events-none">
+<div class="w-full max-w-md pointer-events-auto bg-surface-container-lowest p-4 rounded-3xl shadow-[0_-10px_40px_rgba(26,43,72,0.1)] border border-outline-variant/10 flex flex-col gap-3">
+<div class="flex justify-between items-center px-2">
+<div class="flex flex-col">
+<span class="text-label-sm font-label-sm text-on-surface-variant">座位 B3 • 10:00</span>
+<span class="text-headline-md font-headline-md text-primary">$15.00</span>
+</div>
+<div class="text-right">
+<span class="text-label-sm font-label-sm text-secondary flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" data-icon="bolt">bolt</span>即刻确认</span>
+</div>
+</div>
+<button class="w-full bg-primary text-on-primary rounded-full py-4 text-label-md font-label-md hover:bg-primary-container hover:text-on-primary-container transition-all shadow-lg active:scale-95">确认预约</button>
+</div>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe h-20 bg-surface dark:bg-surface shadow-[0_-10px_40px_rgba(3,22,50,0.04)] rounded-t-lg">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-4 py-1 hover:text-primary dark:hover:text-primary-fixed group transition-all" href="#">
+<span class="material-symbols-outlined mb-1 group-hover:scale-110 transition-transform" data-icon="home">home</span>
+<span class="text-label-sm font-label-sm">首页</span>
+</a>
+<!-- Active Tab: Booking -->
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed bg-secondary-container/50 dark:bg-primary-container rounded-xl px-4 py-1 scale-98 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="event_seat" data-weight="fill">event_seat</span>
+<span class="text-label-sm font-label-sm">预约</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-4 py-1 hover:text-primary dark:hover:text-primary-fixed group transition-all" href="#">
+<span class="material-symbols-outlined mb-1 group-hover:scale-110 transition-transform" data-icon="qr_code_scanner">qr_code_scanner</span>
+<span class="text-label-sm font-label-sm">扫码</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-4 py-1 hover:text-primary dark:hover:text-primary-fixed group transition-all" href="#">
+<span class="material-symbols-outlined mb-1 group-hover:scale-110 transition-transform" data-icon="shopping_bag">shopping_bag</span>
+<span class="text-label-sm font-label-sm">商城</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-4 py-1 hover:text-primary dark:hover:text-primary-fixed group transition-all" href="#">
+<span class="material-symbols-outlined mb-1 group-hover:scale-110 transition-transform" data-icon="person">person</span>
+<span class="text-label-sm font-label-sm">我的</span>
+</a>
+</nav>
+<!-- Desktop spacing adjustment for floating action bar -->
+<div class="hidden md:block h-32"></div>
+
+
+</body></html>

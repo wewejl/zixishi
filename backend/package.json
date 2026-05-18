@@ -1,0 +1,17 @@
+{
+  "name": "zixishi-backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "access:smoke": "node scripts/access-smoke.js",
+    "db:counts": "node scripts/db-counts.js",
+    "db:reset": "node scripts/db-reset.js",
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {}
+}

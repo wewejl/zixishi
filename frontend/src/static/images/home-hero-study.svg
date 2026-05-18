@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-label="Warm minimalist study space">
+  <defs>
+    <linearGradient id="wall" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fff8ec"/>
+      <stop offset=".58" stop-color="#f2eadf"/>
+      <stop offset="1" stop-color="#d7dce4"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#d6b98b"/>
+      <stop offset=".55" stop-color="#a98255"/>
+      <stop offset="1" stop-color="#5e4938"/>
+    </linearGradient>
+    <linearGradient id="desk" x1="0" x2="1">
+      <stop offset="0" stop-color="#f2d9ad"/>
+      <stop offset="1" stop-color="#bf8d55"/>
+    </linearGradient>
+    <radialGradient id="sun" cx=".28" cy=".18" r=".42">
+      <stop offset="0" stop-color="#fff7d4" stop-opacity=".95"/>
+      <stop offset=".48" stop-color="#f8d99d" stop-opacity=".38"/>
+      <stop offset="1" stop-color="#f8d99d" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="shade" x1="0" x2="0" y1="0" y2="1">
+      <stop offset=".25" stop-color="#031632" stop-opacity="0"/>
+      <stop offset="1" stop-color="#031632" stop-opacity=".34"/>
+    </linearGradient>
+    <filter id="soft" x="-10%" y="-20%" width="120%" height="150%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="720" fill="url(#wall)"/>
+  <rect y="460" width="1200" height="260" fill="url(#floor)"/>
+  <path d="M0 512h1200v208H0z" fill="#031632" opacity=".08"/>
+  <circle cx="260" cy="120" r="320" fill="url(#sun)"/>
+  <g opacity=".92">
+    <rect x="112" y="82" width="346" height="310" rx="10" fill="#fbf9f9"/>
+    <rect x="134" y="104" width="142" height="266" rx="4" fill="#dce9f0"/>
+    <rect x="294" y="104" width="142" height="266" rx="4" fill="#eaf1f2"/>
+    <path d="M128 370h312" stroke="#c6bcae" stroke-width="10" stroke-linecap="round"/>
+    <path d="M285 104v266" stroke="#fbf9f9" stroke-width="12"/>
+    <path d="M135 242h300" stroke="#fbf9f9" stroke-width="10"/>
+  </g>
+  <g opacity=".42" stroke="#f7d99d" stroke-width="18" filter="url(#soft)">
+    <path d="M150 130 610 478"/>
+    <path d="M220 112 705 478"/>
+    <path d="M350 114 822 484"/>
+  </g>
+  <g>
+    <rect x="500" y="374" width="520" height="44" rx="16" fill="url(#desk)"/>
+    <rect x="534" y="414" width="30" height="180" rx="10" fill="#8b6847"/>
+    <rect x="952" y="414" width="30" height="180" rx="10" fill="#74553e"/>
+    <rect x="558" y="338" width="210" height="24" rx="12" fill="#031632" opacity=".18"/>
+    <rect x="610" y="278" width="96" height="60" rx="10" fill="#fbf9f9"/>
+    <path d="M706 328c76-42 136-20 184 35" fill="none" stroke="#25324a" stroke-width="18" stroke-linecap="round"/>
+    <rect x="858" y="318" width="122" height="92" rx="46" fill="#1a2b48"/>
+    <rect x="875" y="344" width="88" height="112" rx="30" fill="#263852"/>
+    <rect x="894" y="456" width="18" height="90" rx="9" fill="#19243a"/>
+    <rect x="925" y="456" width="18" height="90" rx="9" fill="#19243a"/>
+  </g>
+  <g opacity=".65">
+    <path d="M588 342h90" stroke="#6a5d43" stroke-width="8" stroke-linecap="round"/>
+    <path d="M642 338v-58" stroke="#6a5d43" stroke-width="8" stroke-linecap="round"/>
+    <ellipse cx="646" cy="270" rx="44" ry="22" fill="#f3e0c0"/>
+    <circle cx="646" cy="286" r="44" fill="#ffe6ad" opacity=".25"/>
+  </g>
+  <rect width="1200" height="720" fill="url(#shade)"/>
+</svg>

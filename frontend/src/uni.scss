@@ -1,0 +1,261 @@
+$font-family-app: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+
+$color-background: #fbf9f9;
+$color-background-warm: #f9f7f2;
+$color-surface: #fbf9f9;
+$color-surface-lowest: #ffffff;
+$color-surface-low: #f6f2ea;
+$color-surface-container: #f0debd;
+$color-surface-high: #f3e0c0;
+$color-surface-highest: #e7d2ae;
+$color-surface-dim: #d8c39e;
+
+$color-background-dark: #031632;
+$color-surface-dark: #071c3e;
+$color-surface-dark-low: #0b2348;
+$color-surface-dark-high: #12305a;
+$color-surface-dark-overlay: rgba(3, 22, 50, 0.88);
+
+$color-on-background: #031632;
+$color-on-surface: #031632;
+$color-on-surface-variant: #4b5360;
+$color-on-dark: #fbf9f9;
+$color-on-dark-variant: rgba(251, 249, 249, 0.72);
+$color-outline: #7e715d;
+$color-outline-variant: rgba(240, 222, 189, 0.5);
+
+$color-primary: #031632;
+$color-primary-container: #071c3e;
+$color-primary-fixed: #f3e0c0;
+$color-primary-fixed-dim: #f0debd;
+$color-on-primary: #ffffff;
+$color-on-primary-container: #f3e0c0;
+
+$color-secondary: #6a5d43;
+$color-secondary-container: #f0debd;
+$color-secondary-fixed: #f3e0c0;
+$color-secondary-fixed-dim: #d6c4a5;
+$color-on-secondary: #ffffff;
+$color-on-secondary-container: #6e6147;
+
+$color-tertiary: #fbf9f9;
+$color-tertiary-container: #12305a;
+$color-tertiary-fixed: #f6f2ea;
+$color-on-tertiary: #ffffff;
+
+$color-success: #34c759;
+$color-success-bg: #e8f5ee;
+$color-success-text: #1f7a4d;
+$color-warning-bg: #fff4d8;
+$color-warning-text: #936316;
+$color-error: #ba1a1a;
+$color-error-container: #ffdad6;
+$color-danger-bg: #fff1ef;
+$color-danger-text: #c24132;
+$color-info-bg: #eaf2ff;
+$color-info-text: #2457a7;
+
+$space-unit: 16rpx;
+$space-gutter: 32rpx;
+$space-page-x: 48rpx;
+$space-section-gap: 96rpx;
+$space-card-padding: 48rpx;
+
+$radius-default: 32rpx;
+$radius-lg: 48rpx;
+$radius-xl: 64rpx;
+$radius-full: 999rpx;
+
+$shadow-ambient: 0 24rpx 80rpx -24rpx rgba(3, 22, 50, 0.16);
+$shadow-card: 0 20rpx 72rpx rgba(3, 22, 50, 0.08);
+$shadow-panel: 0 40rpx 100rpx rgba(3, 22, 50, 0.1);
+$shadow-bottom-nav: 0 -20rpx 80rpx rgba(3, 22, 50, 0.08);
+$shadow-selected: 0 10rpx 28rpx rgba(126, 113, 93, 0.22);
+$shadow-glow: 0 0 80rpx rgba(243, 224, 192, 0.18), inset 0 0 40rpx rgba(243, 224, 192, 0.06);
+
+$safe-area-top: env(safe-area-inset-top);
+$safe-area-bottom: env(safe-area-inset-bottom);
+$app-topbar-height: 128rpx;
+$app-bottomnav-height: 160rpx;
+
+page {
+  --app-font-family: #{$font-family-app};
+  --app-bg: #{$color-background};
+  --app-bg-warm: #{$color-background-warm};
+  --app-surface: #{$color-surface};
+  --app-surface-lowest: #{$color-surface-lowest};
+  --app-surface-low: #{$color-surface-low};
+  --app-surface-container: #{$color-surface-container};
+  --app-surface-high: #{$color-surface-high};
+  --app-surface-highest: #{$color-surface-highest};
+  --app-surface-dim: #{$color-surface-dim};
+  --app-bg-dark: #{$color-background-dark};
+  --app-surface-dark: #{$color-surface-dark};
+  --app-surface-dark-low: #{$color-surface-dark-low};
+  --app-surface-dark-high: #{$color-surface-dark-high};
+  --app-surface-dark-overlay: #{$color-surface-dark-overlay};
+  --app-text: #{$color-on-background};
+  --app-text-strong: #{$color-on-surface};
+  --app-text-muted: #{$color-on-surface-variant};
+  --app-text-on-dark: #{$color-on-dark};
+  --app-text-on-dark-muted: #{$color-on-dark-variant};
+  --app-outline: #{$color-outline};
+  --app-outline-variant: #{$color-outline-variant};
+  --app-primary: #{$color-primary};
+  --app-primary-container: #{$color-primary-container};
+  --app-primary-fixed: #{$color-primary-fixed};
+  --app-primary-fixed-dim: #{$color-primary-fixed-dim};
+  --app-on-primary: #{$color-on-primary};
+  --app-on-primary-container: #{$color-on-primary-container};
+  --app-secondary: #{$color-secondary};
+  --app-secondary-container: #{$color-secondary-container};
+  --app-secondary-fixed: #{$color-secondary-fixed};
+  --app-secondary-fixed-dim: #{$color-secondary-fixed-dim};
+  --app-on-secondary: #{$color-on-secondary};
+  --app-on-secondary-container: #{$color-on-secondary-container};
+  --app-tertiary: #{$color-tertiary};
+  --app-tertiary-container: #{$color-tertiary-container};
+  --app-tertiary-fixed: #{$color-tertiary-fixed};
+  --app-on-tertiary: #{$color-on-tertiary};
+  --app-success: #{$color-success};
+  --app-success-bg: #{$color-success-bg};
+  --app-success-text: #{$color-success-text};
+  --app-warning-bg: #{$color-warning-bg};
+  --app-warning-text: #{$color-warning-text};
+  --app-error: #{$color-error};
+  --app-error-container: #{$color-error-container};
+  --app-danger-bg: #{$color-danger-bg};
+  --app-danger-text: #{$color-danger-text};
+  --app-info-bg: #{$color-info-bg};
+  --app-info-text: #{$color-info-text};
+  --app-radius-default: #{$radius-default};
+  --app-radius-lg: #{$radius-lg};
+  --app-radius-xl: #{$radius-xl};
+  --app-radius-full: #{$radius-full};
+  --app-shadow-ambient: #{$shadow-ambient};
+  --app-shadow-card: #{$shadow-card};
+  --app-shadow-panel: #{$shadow-panel};
+  --app-shadow-bottom-nav: #{$shadow-bottom-nav};
+  --app-shadow-selected: #{$shadow-selected};
+  --app-shadow-glow: #{$shadow-glow};
+  --app-safe-top: #{$safe-area-top};
+  --app-safe-bottom: #{$safe-area-bottom};
+  --app-topbar-height: #{$app-topbar-height};
+  --app-bottomnav-height: #{$app-bottomnav-height};
+
+  background: $color-background;
+  color: $color-on-background;
+  font-family: $font-family-app;
+  letter-spacing: 0;
+}
+
+view,
+text,
+button,
+image,
+scroll-view {
+  box-sizing: border-box;
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  line-height: 1.25;
+}
+
+button::after {
+  border: 0;
+}
+
+.app-page {
+  min-height: 100vh;
+  padding: $space-gutter $space-page-x calc(#{$space-gutter} + #{$safe-area-bottom});
+  background: $color-background;
+  color: $color-on-background;
+  font-family: $font-family-app;
+}
+
+.app-page--warm {
+  background: $color-background-warm;
+}
+
+.app-page--with-topbar {
+  padding-top: calc(#{$app-topbar-height} + #{$safe-area-top} + 32rpx);
+}
+
+.app-page--with-bottomnav {
+  padding-bottom: calc(#{$app-bottomnav-height} + #{$safe-area-bottom} + 32rpx);
+}
+
+.app-page--dark {
+  background: $color-background-dark;
+  color: $color-on-dark;
+  --app-bg: #{$color-background-dark};
+  --app-surface: #{$color-surface-dark};
+  --app-surface-low: #{$color-surface-dark-low};
+  --app-surface-container: #{$color-surface-dark-high};
+  --app-text: #{$color-on-dark};
+  --app-text-strong: #{$color-on-dark};
+  --app-text-muted: #{$color-on-dark-variant};
+  --app-outline-variant: rgba(240, 222, 189, 0.28);
+}
+
+.app-stack {
+  display: flex;
+  flex-direction: column;
+  gap: $space-gutter;
+}
+
+.app-stack--section {
+  gap: $space-section-gap;
+}
+
+.app-row {
+  display: flex;
+  align-items: center;
+  gap: $space-unit;
+}
+
+.app-title {
+  display: block;
+  color: $color-primary;
+  font-size: 48rpx;
+  font-weight: 600;
+  line-height: 64rpx;
+  letter-spacing: 0;
+}
+
+.app-title--large {
+  font-size: 56rpx;
+  line-height: 72rpx;
+}
+
+.app-subtitle {
+  display: block;
+  color: $color-on-surface-variant;
+  font-size: 32rpx;
+  font-weight: 400;
+  line-height: 48rpx;
+  letter-spacing: 0;
+}
+
+.app-label {
+  color: $color-on-surface-variant;
+  font-size: 24rpx;
+  font-weight: 600;
+  line-height: 32rpx;
+  letter-spacing: 0;
+}
+
+.app-muted {
+  color: $color-on-surface-variant;
+}
+
+.app-safe-top {
+  padding-top: $safe-area-top;
+}
+
+.app-safe-bottom {
+  padding-bottom: $safe-area-bottom;
+}
