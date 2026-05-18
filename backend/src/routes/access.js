@@ -8,6 +8,22 @@ const accessService = new AccessService();
 
 accessRouter.use(requireAuth);
 
+
+accessRouter.post('/merchant/access/unlock', (req, res, next) => {
+  try {
+    res.json(accessService.unlockByMerchant({
+      operatorId: resolveUserId(req),
+      targetUserId: req.body?.targetUserId ?? null,
+      storeId: req.body?.storeId,
+      deviceId: req.body?.deviceId,
+      reason: req.body?.reason,
+      clientContext: req.body?.clientContext,
+    }));
+  } catch (error) {
+    next(error);
+  }
+});
+
 accessRouter.post('/access/unlock', (req, res, next) => {
   try {
     res.json(accessService.unlock({

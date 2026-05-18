@@ -54,4 +54,46 @@ export class SeatRepository extends BaseRepository {
       WHERE store_id = ? AND status = 'active'
     `).get(storeId)?.count || 0;
   }
+
+  findById(seatId) {
+    return this.db.prepare(`SELECT * FROM seats WHERE id = ? LIMIT 1`).get(seatId);
+  }
+
+  updateSeatCode({ seatId, storeId, seatNo, at }) {
+    const result = this.db.prepare(`
+      UPDATE seats
+      SET seat_no = ?, updated_at = ?
+      WHERE id = ? AND store_id = ?
+    `).run(seatNo, at, seatId, storeId);
+    return result.changes > 0;
+  }
+
+  updateSeatStatus({ seatId, storeId, status, at }) {
+    const result = this.db.prepare(`
+      UPDATE seats
+      SET status = ?, updated_at = ?
+      WHERE id = ? AND store_id = ?
+    `).run(status, at, seatId, storeId);
+    return result.changes > 0;
+  }
+
+  existsSeatNoInStore({ storeId, seatNo, excludeSeatId = null }) {
+    if (excludeSeatId) {
+      const row = this.db.prepare(`
+        SELECT 1
+        FROM seats
+        WHERE store_id = ? AND seat_no = ? AND id != ?
+        LIMIT 1
+      `).get(storeId, seatNo, excludeSeatId);
+      return Boolean(row);
+    }
+
+    const row = this.db.prepare(`
+      SELECT 1
+      FROM seats
+      WHERE store_id = ? AND seat_no = ?
+      LIMIT 1
+    `).get(storeId, seatNo);
+    return Boolean(row);
+  }
 }
