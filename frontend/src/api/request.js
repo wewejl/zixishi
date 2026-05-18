@@ -108,16 +108,27 @@ function buildQuery(params = {}) {
     .join('&');
 }
 
-function normalizeApiError(response, fallbackMessage = '请求失败') {
+function fallbackMessageByStatus(statusCode) {
+  if (statusCode === 400) return '请求参数有误，请检查后重试';
+  if (statusCode === 401) return '请先登录后再操作';
+  if (statusCode === 403) return '当前账号暂无操作权限';
+  if (statusCode === 404) return '请求的资源不存在或已失效';
+  if (statusCode === 409) return '当前状态已变化，请刷新后重试';
+  if (statusCode >= 500) return '服务暂时不可用，请稍后重试';
+  return '请求失败，请稍后重试';
+}
+
+function normalizeApiError(response, fallbackMessage = '') {
   const data = response?.data || {};
   const error = data.error || {};
+  const statusCode = response?.statusCode || 0;
 
   return new ApiError({
-    code: error.code || (response?.statusCode === 401 ? AUTH_ERROR_CODES.unauthorized : 'REQUEST_FAILED'),
-    message: error.message || fallbackMessage,
+    code: error.code || (statusCode === 401 ? AUTH_ERROR_CODES.unauthorized : 'REQUEST_FAILED'),
+    message: error.message || data.message || fallbackMessage || fallbackMessageByStatus(statusCode),
     requestId: error.requestId || '',
     details: error.details || null,
-    statusCode: response?.statusCode || 0,
+    statusCode,
     response
   });
 }
@@ -133,10 +144,17 @@ function handleUnauthorized(error) {
 function buildUnauthenticatedError() {
   return new ApiError({
     code: AUTH_ERROR_CODES.unauthorized,
-    message: '未登录或 token 无效',
+    message: '请先登录后再操作',
     statusCode: 0,
     details: { authHeader: 'Bearer token required' }
   });
+}
+
+function normalizeNetworkErrorMessage(error) {
+  const message = String(error?.errMsg || '');
+  if (/timeout/i.test(message)) return '网络请求超时，请检查网络后重试';
+  if (/abort/i.test(message)) return '请求已取消';
+  return '无法连接服务，请确认后端已启动或网络可用';
 }
 
 export async function request(options = {}) {
@@ -198,7 +216,7 @@ export async function request(options = {}) {
         reject(
           new ApiError({
             code: 'NETWORK_ERROR',
-            message: error?.errMsg || '网络请求失败',
+            message: normalizeNetworkErrorMessage(error),
             details: error || null
           })
         );

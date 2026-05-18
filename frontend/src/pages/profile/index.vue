@@ -85,18 +85,35 @@ const recentOrder = ref(null);
 
 const menuItems = computed(() => [
   {
+    icon: 'fact_check',
+    title: '座位与签到状态',
+    url: '/pages/seat-status/index'
+  },
+  {
     icon: 'receipt_long',
     title: '我的订单',
     url: '/pages/orders/index'
   },
   {
-    icon: 'fact_check',
-    title: '签到记录',
-    url: '/pages/seat-status/index'
+    icon: 'shopping_bag',
+    title: '套餐与权益',
+    url: '/pages/packages/index',
+    switchTab: true
+  },
+  {
+    icon: 'lock_open',
+    title: '门禁开门',
+    url: '/pages/access/index',
+    switchTab: true
+  },
+  {
+    icon: 'password',
+    title: '长期通行码',
+    url: '/pages/long-term-password/index'
   },
   {
     icon: 'settings',
-    title: '设置',
+    title: '账号登录',
     url: '/pages/login/index'
   },
   {

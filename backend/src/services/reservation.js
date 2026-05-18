@@ -4,7 +4,9 @@ import { nowIso } from '../utils/time.js';
 import { withTransaction } from '../repositories/transaction.js';
 import { ReservationRepository } from '../repositories/ReservationRepository.js';
 import { ReservationEntitlementRepository } from '../repositories/ReservationEntitlementRepository.js';
+import { OrderRepository } from '../repositories/OrderRepository.js';
 import { ReservationEntitlementService } from './reservationEntitlement.js';
+import { createOrderNo } from './payment.js';
 
 const RESERVATION_STATUSES = new Set([
   'pending_payment',
@@ -27,6 +29,7 @@ export class ReservationService {
 
     return withTransaction((tx) => {
       const reservationRepository = new ReservationRepository(tx);
+      const orderRepository = new OrderRepository(tx);
       const entitlementRepository = new ReservationEntitlementRepository(tx);
       const entitlementService = new ReservationEntitlementService({ entitlementRepository });
       const seat = reservationRepository.findSeatById(seatId);
@@ -69,7 +72,7 @@ export class ReservationService {
         : null;
       const hasEntitlement = Boolean(entitlement);
       const reservationId = createId('resv');
-      const orderId = hasEntitlement ? null : createId('order');
+      let order = null;
       const reservation = reservationRepository.create({
         id: reservationId,
         userId,
@@ -94,17 +97,29 @@ export class ReservationService {
           minutes,
           at,
         });
+      } else {
+        order = orderRepository.createOrder({
+          id: createId('order'),
+          userId,
+          orderNo: createOrderNo(),
+          amountCents: DEFAULT_RESERVATION_PRICE_CENT,
+          currency: 'CNY',
+          wechatPrepayId: null,
+          createdAt: at,
+          updatedAt: at,
+        });
+        orderRepository.attachOrderToReservation(reservationId, order.id, at);
       }
 
       return {
         reservation: toReservationDto(reservation, { priceCent: hasEntitlement ? 0 : DEFAULT_RESERVATION_PRICE_CENT }),
-        order: hasEntitlement ? null : {
-          id: orderId,
+        order: order ? {
+          id: order.id,
           type: 'reservation',
-          status: 'pending_payment',
-          payAmountCent: DEFAULT_RESERVATION_PRICE_CENT,
-          currency: 'CNY',
-        },
+          status: order.status,
+          payAmountCent: order.amount_cents,
+          currency: order.currency,
+        } : null,
       };
     }, { db: this.db });
   }

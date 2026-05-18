@@ -1,6 +1,6 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
-const DEFAULT_STORE_ID = 'store_default';
-const DEFAULT_DEVICE_ID = 'access_device_main';
+const DEFAULT_STORE_ID = import.meta.env.VITE_STORE_ID || 'store_default';
+const DEFAULT_DEVICE_ID = import.meta.env.VITE_ACCESS_DEVICE_ID || 'access_device_main';
 const TOKEN_KEY = 'zixishi_merchant_access_token';
 
 let loginPromise = null;
@@ -65,7 +65,7 @@ async function request(path, options = {}) {
   }
 
   const error = data.error || {};
-  throw new ApiError(error.message || '请求失败', {
+  throw new ApiError(error.message || response.statusText || '请求失败', {
     code: error.code,
     status: response.status,
     details: error.details
@@ -150,4 +150,20 @@ export function updateMerchantSeatStatus(seatId, status) {
     method: 'PATCH',
     body: { status }
   });
+}
+
+export function loadMerchantReservations(params = {}) {
+  return request(`/merchant/stores/${DEFAULT_STORE_ID}/reservations`, { params: { limit: 20, ...params } });
+}
+
+export function loadMerchantOrders(params = {}) {
+  return request(`/merchant/stores/${DEFAULT_STORE_ID}/orders`, { params: { limit: 20, ...params } });
+}
+
+export function loadMerchantCustomers(params = {}) {
+  return request(`/merchant/stores/${DEFAULT_STORE_ID}/customers`, { params: { limit: 20, ...params } });
+}
+
+export function loadMerchantAccessEvents(params = {}) {
+  return request(`/merchant/stores/${DEFAULT_STORE_ID}/access-events`, { params: { limit: 20, ...params } });
 }

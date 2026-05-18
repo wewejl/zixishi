@@ -56,7 +56,7 @@ export class StoreService {
     const date = getShanghaiDate();
     const availability = this.seatService.getAvailability({ storeId, date });
     const availableSeats = availability.seats.filter((seat) => seat.availabilityStatus === 'available');
-    const studyingUserCount = this.seatService.getStudyingUserCount(storeId) || 188;
+    const studyingUserCount = this.seatService.getStudyingUserCount(storeId);
 
     return {
       store: mapStore(store, date),

@@ -12,6 +12,10 @@ export const ENABLE_DEV_AUTO_LOGIN = Boolean(
   import.meta.env.DEV || import.meta.env.VITE_ENABLE_DEV_AUTO_LOGIN === 'true'
 );
 
+export const ENABLE_DEV_MOCK_PAYMENT = Boolean(
+  import.meta.env.DEV || import.meta.env.VITE_ENABLE_DEV_MOCK_PAYMENT === 'true'
+);
+
 export const DEFAULT_STORE_ID = 'store_default';
 
 export const DEFAULT_ACCESS_DEVICE_ID = 'access_device_main';

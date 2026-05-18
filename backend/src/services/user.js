@@ -49,12 +49,11 @@ export class UserService {
       FROM study_sessions
       WHERE user_id = ? AND status = 'completed'
     `).get(userId);
-    const hasEntitlement = this.getEntitlementSummary(userId).membershipLevel === 'premium';
 
     return {
       totalStudyMinutes: row?.total || 0,
-      todayRank: hasEntitlement ? 12 : null,
-      streakDays: hasEntitlement ? 7 : 0
+      todayRank: null,
+      streakDays: 0
     };
   }
 

@@ -1,6 +1,6 @@
 # 静谧空间商家 Web
 
-独立的商家端 Web 前端，默认连接本仓库现有后端。
+独立商家端 Web 前端，默认连接本仓库现有后端。
 
 ## 本地启动
 
@@ -31,3 +31,9 @@ npm run build
 ```
 
 `scripts/run-vite.js` 会优先使用 `merchant-web/node_modules`，如果没有安装本目录依赖，会回退使用 `frontend/node_modules` 中已有的 Vite。
+
+## 环境变量
+
+- `VITE_API_BASE_URL`：后端地址，留空时使用当前域名。
+- `VITE_STORE_ID`：商家门店 ID，默认 `store_default`。
+- `VITE_ACCESS_DEVICE_ID`：门禁设备 ID，默认 `access_device_main`。

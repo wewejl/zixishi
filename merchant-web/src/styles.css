@@ -1,6 +1,6 @@
 :root {
-  color: #16201d;
-  background: #f4f0ea;
+  color: #17201d;
+  background: #f6f2eb;
   font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -8,6 +8,10 @@
 
 * {
   box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -23,6 +27,11 @@ select {
 
 button {
   cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .shell {
@@ -105,7 +114,6 @@ button {
 
 .topbar,
 .panel-head,
-.table-row,
 .area-title,
 .topbar-actions {
   display: flex;
@@ -167,7 +175,8 @@ h2 {
 }
 
 .alert,
-.loading {
+.loading,
+.notice-list {
   margin-bottom: 18px;
   padding: 14px 16px;
   border-radius: 8px;
@@ -178,8 +187,21 @@ h2 {
   background: #ffe2d9;
 }
 
-.loading {
-  background: #fff;
+.alert.success {
+  color: #1d5c3c;
+  background: #dff0e6;
+}
+
+.loading,
+.notice-list {
+  background: #fffdfa;
+}
+
+.notice-list {
+  display: grid;
+  gap: 6px;
+  border: 1px solid #ead7a5;
+  color: #735421;
 }
 
 .metric-grid {
@@ -213,7 +235,8 @@ h2 {
 .metric-card small,
 .panel-head span,
 .result-text,
-.empty {
+.empty,
+.empty-state p {
   color: #747b75;
 }
 
@@ -251,7 +274,9 @@ h2 {
 }
 
 .filters input,
-.filters select {
+.filters select,
+.merchant-unlock-form input,
+.seat-code-input {
   height: 38px;
   border: 1px solid #d5ccbe;
   border-radius: 8px;
@@ -293,7 +318,7 @@ h2 {
 }
 
 .dot.locked {
-  background: #9a9a9a;
+  background: #7d8080;
 }
 
 .seat-groups {
@@ -313,21 +338,38 @@ h2 {
 
 .seat-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(62px, 1fr));
-  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
 }
 
 .seat-tile {
-  aspect-ratio: 1.25;
-  min-height: 48px;
+  display: grid;
+  gap: 10px;
+  min-height: 132px;
+  padding: 12px;
   border: 1px solid transparent;
   border-radius: 8px;
   color: #17241f;
   background: #eef2ee;
 }
 
-.seat-tile span {
-  font-weight: 800;
+.seat-tile-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.seat-tile-head strong {
+  font-size: 18px;
+}
+
+.seat-tile label {
+  display: grid;
+  gap: 5px;
+  color: #666f68;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .seat-tile.is-available {
@@ -348,14 +390,41 @@ h2 {
 .seat-tile.is-locked,
 .seat-tile.is-maintenance,
 .seat-tile.is-disabled {
-  color: #6d6d6d;
+  color: #565a5a;
   background: #eeeeec;
+}
+
+.seat-code-input {
+  width: 100%;
+  font-size: 13px;
+}
+
+.seat-actions {
+  display: grid;
+  grid-template-columns: 1fr 64px 64px;
+  gap: 6px;
+}
+
+.seat-actions button {
+  min-height: 30px;
+  border: 1px solid #d5ccbe;
+  border-radius: 8px;
+  color: #263a32;
+  background: #fffdfa;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .side-stack {
   display: grid;
   align-content: start;
   gap: 18px;
+}
+
+.merchant-unlock-form {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 10px;
 }
 
 .primary-action,
@@ -421,8 +490,18 @@ h2 {
 }
 
 .table-row {
+  display: grid;
   min-height: 48px;
+  align-items: center;
+  gap: 12px;
   border-bottom: 1px solid #eee7de;
+}
+
+.reservations-table .table-row,
+.orders-table .table-row,
+.customers-table .table-row,
+.access-table .table-row {
+  grid-template-columns: minmax(86px, 0.8fr) minmax(160px, 1.5fr) minmax(74px, 0.6fr);
 }
 
 .table-row > * {
@@ -436,7 +515,8 @@ h2 {
   font-weight: 700;
 }
 
-.table-row strong {
+.table-row strong,
+.table-row span {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -456,21 +536,60 @@ h2 {
 
 .status.pending_payment,
 .status.cancelled,
-.status.expired {
+.status.expired,
+.status.denied,
+.status.closed {
   color: #7c3b21;
   background: #ffe7d9;
 }
 
 .status.paid,
 .status.confirmed,
-.status.checked_in {
+.status.checked_in,
+.status.granted,
+.status.available {
   color: #1d5c3c;
   background: #dff0e6;
 }
 
-.empty {
+.status.reserved {
+  color: #755119;
+  background: #fff0c7;
+}
+
+.status.occupied {
+  color: #21466f;
+  background: #dceaff;
+}
+
+.status.locked,
+.status.maintenance,
+.status.disabled {
+  color: #555;
+  background: #e8e8e8;
+}
+
+.empty,
+.empty-state {
   padding: 20px 0;
   text-align: center;
+}
+
+.empty.compact {
+  padding: 8px 0;
+}
+
+.empty-state {
+  display: grid;
+  gap: 8px;
+  padding: 28px 18px;
+  border: 1px dashed #d8cdbc;
+  border-radius: 8px;
+  background: #fffaf2;
+}
+
+.empty-state strong {
+  color: #263a32;
 }
 
 @media (max-width: 900px) {
@@ -490,7 +609,35 @@ h2 {
     height: auto;
   }
 
+  .nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .content {
     padding: 18px;
+  }
+
+  .topbar,
+  .panel-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .filters {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .filters input,
+  .filters select {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .reservations-table .table-row,
+  .orders-table .table-row,
+  .customers-table .table-row,
+  .access-table .table-row {
+    grid-template-columns: minmax(70px, 0.8fr) minmax(0, 1.3fr) minmax(70px, 0.7fr);
   }
 }
