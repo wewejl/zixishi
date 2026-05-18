@@ -6,8 +6,16 @@ import { withTransaction } from '../repositories/transaction.js';
 import { PlanRepository } from '../repositories/PlanRepository.js';
 import { OrderRepository } from '../repositories/OrderRepository.js';
 import { OrderEntitlementRepository } from '../repositories/OrderEntitlementRepository.js';
-import { createMockPrepayId, createMockTransactionId, createOrderNo, toPaymentDto } from './payment.js';
+import { UserRepository } from '../repositories/UserRepository.js';
+import {
+  createMockTransactionId,
+  createOrderNo,
+  createWechatJsapiPayment,
+  decryptWechatPayResource,
+  verifyWechatPayNotify,
+} from './payment.js';
 import { OrderEntitlementService } from './orderEntitlement.js';
+import { env, isProduction } from '../config/env.js';
 
 const ORDER_STATUSES = new Set(['pending_payment', 'paid', 'closed', 'refunded', 'partially_refunded']);
 
@@ -17,31 +25,33 @@ export class OrderService {
     planRepository = new PlanRepository(database),
     orderRepository = new OrderRepository(database),
     entitlementRepository = new OrderEntitlementRepository(database),
+    userRepository = new UserRepository(database),
   } = {}) {
     this.database = database;
     this.planRepository = planRepository;
     this.orderRepository = orderRepository;
     this.entitlementRepository = entitlementRepository;
+    this.userRepository = userRepository;
   }
 
-  createOrder({ userId, type, packageId, storeId = null, reservationId, payAmountCent = null }) {
+  async createOrder({ userId, type, packageId, storeId = null, reservationId, payAmountCent = null, clientIp = null }) {
     if (type === 'package') {
-      return this.createPackageOrder({ userId, packageId, storeId });
+      return this.createPackageOrder({ userId, packageId, storeId, clientIp });
     }
 
     if (type === 'reservation') {
-      return this.createReservationOrder({ userId, reservationId, payAmountCent });
+      return this.createReservationOrder({ userId, reservationId, payAmountCent, clientIp });
     }
 
     throw badRequest('订单类型无效', { type });
   }
 
-  createPackageOrder({ userId, packageId, storeId }) {
+  async createPackageOrder({ userId, packageId, storeId, clientIp }) {
     if (!packageId) {
       throw badRequest('packageId 不能为空');
     }
 
-    return withTransaction((tx) => {
+    const result = withTransaction((tx) => {
       const planRepository = new PlanRepository(tx);
       const orderRepository = new OrderRepository(tx);
       const plan = planRepository.findActiveById(packageId, { storeId });
@@ -57,7 +67,7 @@ export class OrderService {
         orderNo: createOrderNo(),
         amountCents: plan.price_cents,
         currency: plan.currency,
-        wechatPrepayId: createMockPrepayId(),
+        wechatPrepayId: null,
         createdAt: at,
         updatedAt: at,
       });
@@ -74,17 +84,19 @@ export class OrderService {
 
       return {
         order: toOrderDto({ ...order, plan_name: plan.name }, { type: 'package' }),
-        payment: toPaymentDto(order),
+        dbOrder: { ...order, plan_name: plan.name },
       };
     }, { db: this.database });
+
+    return this.attachPayment(result, { userId, description: result.order.subject, clientIp });
   }
 
-  createReservationOrder({ userId, reservationId, payAmountCent }) {
+  async createReservationOrder({ userId, reservationId, payAmountCent, clientIp }) {
     if (!reservationId) {
       throw badRequest('reservationId 不能为空');
     }
 
-    return withTransaction((tx) => {
+    const result = withTransaction((tx) => {
       const orderRepository = new OrderRepository(tx);
       const reservation = orderRepository.findReservationForPayment(reservationId, userId);
 
@@ -101,20 +113,20 @@ export class OrderService {
         if (existing) {
           return {
             order: toOrderDto(existing, { type: 'reservation', reservation }),
-            payment: toPaymentDto(existing),
+            dbOrder: existing,
           };
         }
       }
 
       const at = nowIso();
-      const amountCents = Number.isInteger(payAmountCent) && payAmountCent >= 0 ? payAmountCent : 0;
+      const amountCents = calculateReservationAmount({ reservation, payAmountCent });
       const order = orderRepository.createOrder({
         id: createId('order'),
         userId,
         orderNo: createOrderNo(),
         amountCents,
         currency: 'CNY',
-        wechatPrepayId: createMockPrepayId(),
+        wechatPrepayId: null,
         createdAt: at,
         updatedAt: at,
       });
@@ -123,12 +135,38 @@ export class OrderService {
 
       return {
         order: toOrderDto(order, { type: 'reservation', reservation }),
-        payment: toPaymentDto(order),
+        dbOrder: order,
       };
     }, { db: this.database });
+
+    return this.attachPayment(result, { userId, description: result.order.subject, clientIp });
+  }
+
+  async createWechatPayment({ userId, orderId, clientIp = null }) {
+    const order = this.orderRepository.findByIdForUser(orderId, userId);
+    if (!order) {
+      throw notFound('订单不存在', { orderId });
+    }
+
+    if (order.status === 'paid') {
+      return { order: toPaidOrderDto(order, { type: inferOrderType(this.orderRepository, order.id) }) };
+    }
+
+    if (order.status !== 'pending_payment') {
+      throw badRequest('订单状态不可支付', { orderId, status: order.status });
+    }
+
+    return this.attachPayment({
+      order: toOrderDto(order, { type: inferOrderType(this.orderRepository, order.id) }),
+      dbOrder: order,
+    }, { userId, description: orderSubjectForPayment(this.orderRepository, order), clientIp });
   }
 
   mockPay({ userId, orderId, payResult = 'success' }) {
+    if (isProduction() && env.wechatPay.mode !== 'mock') {
+      throw badRequest('生产环境不允许 mock 支付', { orderId });
+    }
+
     if (payResult !== 'success') {
       throw badRequest('仅支持 mock 支付成功', { payResult });
     }
@@ -155,39 +193,92 @@ export class OrderService {
         throw badRequest('订单状态不可支付', { orderId, status: order.status });
       }
 
-      const paidAt = nowIso();
-      const paidOrder = orderRepository.markPaid({
-        orderId: order.id,
-        paidCents: order.amount_cents,
+      return completePaidOrder({
+        orderRepository,
+        entitlementRepository,
+        entitlementService,
+        order,
+        item,
+        reservation,
         transactionId: createMockTransactionId(order.order_no),
         rawNotifyJson: JSON.stringify({ provider: 'mock_wechat_pay', payResult }),
-        paidAt,
+        paidAt: nowIso(),
       });
+    }, { db: this.database });
+  }
 
-      if (type === 'package') {
-        const entitlement = entitlementService.grantForPaidPackageOrder({
-          order: paidOrder,
-          item,
-          paidAt,
-        });
+  handleWechatPayNotify({ headers, rawBody, body }) {
+    verifyWechatPayNotify({ headers, rawBody });
+    const transaction = decryptWechatPayResource(body.resource);
 
-        return {
-          order: toPaidOrderDto(paidOrder, { type }),
-          entitlement: toEntitlementDto(entitlement, item),
-        };
+    if (transaction.trade_state !== 'SUCCESS') {
+      return { ok: true, ignored: true };
+    }
+
+    return withTransaction((tx) => {
+      const orderRepository = new OrderRepository(tx);
+      const entitlementRepository = new OrderEntitlementRepository(tx);
+      const entitlementService = new OrderEntitlementService({ entitlementRepository });
+      const order = orderRepository.findByOrderNo(transaction.out_trade_no);
+
+      if (!order) {
+        throw notFound('订单不存在', { outTradeNo: transaction.out_trade_no });
       }
 
-      orderRepository.confirmReservationByOrderId(order.id, paidAt);
-      const confirmedReservation = orderRepository.findReservationByOrderId(order.id);
+      if (order.amount_cents !== transaction.amount?.total) {
+        throw badRequest('微信支付回调金额与订单金额不一致', {
+          orderNo: order.order_no,
+          orderAmountCent: order.amount_cents,
+          notifyAmountCent: transaction.amount?.total,
+        });
+      }
 
-      return {
-        order: toPaidOrderDto(paidOrder, { type }),
-        reservation: {
-          id: confirmedReservation?.id ?? reservation?.id ?? null,
-          status: confirmedReservation?.status ?? 'confirmed',
-        },
-      };
+      const item = orderRepository.findPrimaryItem(order.id);
+      const reservation = orderRepository.findReservationByOrderId(order.id);
+
+      if (order.status === 'paid') {
+        return this.buildPaidResponse({ order, item, reservation, entitlementRepository });
+      }
+
+      return completePaidOrder({
+        orderRepository,
+        entitlementRepository,
+        entitlementService,
+        order,
+        item,
+        reservation,
+        transactionId: transaction.transaction_id,
+        rawNotifyJson: rawBody,
+        paidAt: transaction.success_time || nowIso(),
+      });
     }, { db: this.database });
+  }
+
+  async attachPayment(result, { userId, description, clientIp }) {
+    const openid = this.userRepository.findWechatOpenidForUser({
+      userId,
+      appId: env.wechat.miniAppId,
+    });
+    const { prepayId, payment } = await createWechatJsapiPayment({
+      order: result.dbOrder,
+      openid,
+      description,
+      clientIp,
+    });
+    const updatedOrder = this.orderRepository.updatePrepayId({
+      orderId: result.dbOrder.id,
+      prepayId,
+      at: nowIso(),
+    });
+
+    return {
+      order: {
+        ...result.order,
+        status: updatedOrder.status,
+        payAmountCent: updatedOrder.amount_cents,
+      },
+      payment,
+    };
   }
 
   buildPaidResponse({ order, item, reservation, entitlementRepository }) {
@@ -279,6 +370,69 @@ function toEntitlementDto(entitlement, item) {
     remainingMinutes: entitlement.remaining_minutes,
     validUntil: entitlement.valid_until,
   };
+}
+
+function completePaidOrder({
+  orderRepository,
+  entitlementService,
+  order,
+  item,
+  reservation,
+  transactionId,
+  rawNotifyJson,
+  paidAt,
+}) {
+  const type = item ? 'package' : 'reservation';
+  const paidOrder = orderRepository.markPaid({
+    orderId: order.id,
+    paidCents: order.amount_cents,
+    transactionId,
+    rawNotifyJson,
+    paidAt,
+  });
+
+  if (type === 'package') {
+    const entitlement = entitlementService.grantForPaidPackageOrder({
+      order: paidOrder,
+      item,
+      paidAt,
+    });
+
+    return {
+      order: toPaidOrderDto(paidOrder, { type }),
+      entitlement: toEntitlementDto(entitlement, item),
+    };
+  }
+
+  orderRepository.confirmReservationByOrderId(order.id, paidAt);
+  const confirmedReservation = orderRepository.findReservationByOrderId(order.id);
+
+  return {
+    order: toPaidOrderDto(paidOrder, { type }),
+    reservation: {
+      id: confirmedReservation?.id ?? reservation?.id ?? null,
+      status: confirmedReservation?.status ?? 'confirmed',
+    },
+  };
+}
+
+function inferOrderType(orderRepository, orderId) {
+  return orderRepository.findPrimaryItem(orderId) ? 'package' : 'reservation';
+}
+
+function orderSubjectForPayment(orderRepository, order) {
+  const item = orderRepository.findPrimaryItem(order.id);
+  if (item?.plan_name) return item.plan_name;
+  const reservation = orderRepository.findReservationByOrderId(order.id);
+  return reservationSubject(reservation);
+}
+
+function calculateReservationAmount({ payAmountCent }) {
+  const DEFAULT_RESERVATION_PRICE_CENT = 1500;
+  if (payAmountCent !== null && payAmountCent !== undefined && payAmountCent !== DEFAULT_RESERVATION_PRICE_CENT) {
+    throw badRequest('预约订单金额必须由服务端计算', { expectedAmountCent: DEFAULT_RESERVATION_PRICE_CENT });
+  }
+  return DEFAULT_RESERVATION_PRICE_CENT;
 }
 
 function reservationSubject(reservation) {

@@ -91,6 +91,7 @@ import { studySessionService } from '../../api/services/studySession';
 import { formatTime, getDurationMinutes, toDate } from '../../utils/date';
 import { ROUTES } from '../../utils/route';
 import AppBottomNav from '../../components/common/AppBottomNav.vue';
+import AppIcon from '../../components/common/AppIcon.vue';
 
 const loading = ref(true);
 const error = ref('');

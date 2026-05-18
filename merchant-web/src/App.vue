@@ -278,6 +278,7 @@ onMounted(loadAll);
             <span>使用中</span>
             <strong>{{ seatStats.occupied || metrics.studyingUserCount || 0 }}</strong>
             <small>实时会话</small>
+          </article>
           <article class="metric-card">
             <span>有效预约</span>
             <strong>{{ activeReservations.length }}</strong>

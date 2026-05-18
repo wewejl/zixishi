@@ -44,6 +44,7 @@ import { ref } from 'vue';
 import { onLoad } from '@dcloudio/uni-app';
 import packageService from '../../api/services/package';
 import orderService from '../../api/services/order';
+import { payOrderWithWechat } from '../../utils/payment';
 import { DEFAULT_STORE_ID } from '../../utils/constants';
 import AppIcon from '../../components/common/AppIcon.vue';
 
@@ -90,7 +91,7 @@ async function buyPackage() {
       storeId: DEFAULT_STORE_ID
     });
     const order = orderResult.order || orderResult;
-    await orderService.mockPay(order.id, { payResult: 'success' });
+    await payOrderWithWechat(order.id, orderResult.payment);
     uni.showToast({ title: '支付成功', icon: 'success' });
     setTimeout(() => uni.navigateTo({ url: '/pages/orders/index' }), 500);
   } catch (error) {

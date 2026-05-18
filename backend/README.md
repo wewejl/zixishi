@@ -11,9 +11,9 @@ npm run dev
 
 The API runs at `http://localhost:3000` by default. SQLite data is stored in `data/zixishi.sqlite`.
 
-Current endpoint:
+Core endpoints now include login, stores, reservations, study sessions, packages, orders, WeChat Pay, and access control. See `../API_CONTRACT.md` and `../LAUNCH_CHECKLIST.md`.
 
-- `GET /api/health`
+Production WeChat login and WeChat Pay are configured through environment variables. Use `../.env.example` as the required variable list.
 
 ## Door access smoke test
 

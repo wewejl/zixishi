@@ -6,17 +6,43 @@ export const ordersRouter = Router();
 
 const orderService = new OrderService();
 
+ordersRouter.post('/payments/wechat/notify', (req, res, next) => {
+  try {
+    orderService.handleWechatPayNotify({
+      headers: req.headers,
+      rawBody: req.rawBody || JSON.stringify(req.body || {}),
+      body: req.body || {},
+    });
+    res.json({ code: 'SUCCESS', message: '成功' });
+  } catch (error) {
+    next(error);
+  }
+});
+
 ordersRouter.use(requireAuth);
 
-ordersRouter.post('/orders', (req, res, next) => {
+ordersRouter.post('/orders', async (req, res, next) => {
   try {
-    res.json(orderService.createOrder({
+    res.json(await orderService.createOrder({
       userId: resolveUserId(req),
       type: req.body?.type,
       packageId: req.body?.packageId,
       storeId: req.body?.storeId ?? null,
       reservationId: req.body?.reservationId,
       payAmountCent: req.body?.payAmountCent,
+      clientIp: req.ip,
+    }));
+  } catch (error) {
+    next(error);
+  }
+});
+
+ordersRouter.post('/orders/:orderId/wechat-pay', async (req, res, next) => {
+  try {
+    res.json(await orderService.createWechatPayment({
+      userId: resolveUserId(req),
+      orderId: req.params.orderId,
+      clientIp: req.ip,
     }));
   } catch (error) {
     next(error);

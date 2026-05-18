@@ -87,6 +87,7 @@ import { computed, reactive, ref } from 'vue';
 import { onLoad } from '@dcloudio/uni-app';
 import { orderService } from '../../api/services/order';
 import { reservationService } from '../../api/services/reservation';
+import { payOrderWithWechat } from '../../utils/payment';
 import { formatDate, formatTime } from '../../utils/date';
 import { formatPrice } from '../../utils/price';
 import { ROUTES } from '../../utils/route';
@@ -159,8 +160,14 @@ async function confirmBooking() {
 
     let reservation = result.reservation;
     if (result.order?.id) {
-      paymentState.value = '已创建待支付订单，正在模拟支付...';
-      const payResult = await orderService.mockPay(result.order.id);
+      const orderResult = await orderService.createOrder({
+        type: 'reservation',
+        reservationId: reservation.id,
+        payAmountCent: result.order.payAmountCent
+      });
+      const order = orderResult.order || orderResult;
+      paymentState.value = '已创建待支付订单，正在拉起微信支付...';
+      const payResult = await payOrderWithWechat(order.id, orderResult.payment);
       reservation = payResult.reservation || reservation;
     }
 

@@ -48,6 +48,15 @@ export class OrderRepository extends BaseRepository {
     `).get(orderId);
   }
 
+  findByOrderNo(orderNo) {
+    return this.db.prepare(`
+      SELECT *
+      FROM orders
+      WHERE order_no = ?
+      LIMIT 1
+    `).get(orderNo);
+  }
+
   findByIdForUser(orderId, userId) {
     return this.db.prepare(`
       SELECT *
@@ -109,6 +118,16 @@ export class OrderRepository extends BaseRepository {
         updated_at = ?
       WHERE id = ? AND status = 'pending_payment'
     `).run(paidCents, transactionId, rawNotifyJson, paidAt, paidAt, orderId);
+
+    return this.findById(orderId);
+  }
+
+  updatePrepayId({ orderId, prepayId, at }) {
+    this.db.prepare(`
+      UPDATE orders
+      SET wechat_prepay_id = ?, updated_at = ?
+      WHERE id = ?
+    `).run(prepayId, at, orderId);
 
     return this.findById(orderId);
   }

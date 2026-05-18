@@ -48,6 +48,7 @@
 import { ref } from 'vue';
 import { onLoad, onReachBottom } from '@dcloudio/uni-app';
 import orderService from '../../api/services/order';
+import { payOrderWithWechat } from '../../utils/payment';
 import AppIcon from '../../components/common/AppIcon.vue';
 import AppBottomNav from '../../components/common/AppBottomNav.vue';
 
@@ -123,7 +124,7 @@ async function loadMore() {
 async function payOrder(order) {
   payingId.value = order.id;
   try {
-    const result = await orderService.mockPay(order.id, { payResult: 'success' });
+    const result = await payOrderWithWechat(order.id);
     const paidOrder = result.order || {};
     orders.value = orders.value.map((item) => (item.id === order.id ? { ...item, ...paidOrder, status: paidOrder.status || 'paid' } : item));
     uni.showToast({ title: '支付成功', icon: 'success' });

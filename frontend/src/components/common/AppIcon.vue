@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { MP_ICON_DATA } from '../../utils/mp-icon-data';
+
 const ICON_FILE_MAP = {
   home: 'ic-home',
   home_max: 'ic-home',
@@ -62,6 +64,22 @@ const ICON_FILE_MAP = {
   hourglass_empty: 'ic-hourglass',
   location_on: 'ic-location',
   group: 'ic-group'
+};
+
+const MP_ICON_COLOR_MAP = {
+  '#031632': '031632',
+  '#1f2f4d': '1f2f4d',
+  '#44474d': '44474d',
+  '#4b5360': '4b5360',
+  '#6a5d43': '6a5d43',
+  '#75777e': '75777e',
+  '#9c7836': '9c7836',
+  '#f0debd': 'f0debd',
+  '#f3e0c0': 'f3e0c0',
+  '#ffffff': 'ffffff',
+  'white': 'ffffff',
+  'rgba(255,255,255,0.64)': 'ffffff-a64',
+  'rgba(255, 255, 255, 0.64)': 'ffffff-a64'
 };
 
 const FALLBACK_TEXT_MAP = {
@@ -107,6 +125,16 @@ const FALLBACK_TEXT_MAP = {
   location_on: '位',
   group: '人'
 };
+
+function normalizeMpIconColor(value) {
+  const normalized = String(value || '').trim().toLowerCase();
+  return MP_ICON_COLOR_MAP[normalized] || '031632';
+}
+
+function resolveMpIconSource(file, color) {
+  const key = `${file}-${normalizeMpIconColor(color)}`;
+  return MP_ICON_DATA[key] || '';
+}
 
 export default {
   name: 'AppIcon',
@@ -154,12 +182,21 @@ export default {
         return this.src;
       }
       const file = ICON_FILE_MAP[this.normalizedName] || (this.normalizedName ? `ic-${this.normalizedName}` : '');
+      // #ifdef MP-WEIXIN
+      return file ? resolveMpIconSource(file, this.color) : '';
+      // #endif
       return file ? `/static/icons/${file}.svg` : '';
     },
     imageVisible() {
+      // #ifdef MP-WEIXIN
+      return Boolean(this.resolvedSrc) && !this.imageFailed;
+      // #endif
       return Boolean(this.resolvedSrc) && !this.imageFailed && !this.maskVisible;
     },
     maskVisible() {
+      // #ifdef MP-WEIXIN
+      return false;
+      // #endif
       return Boolean(this.resolvedSrc?.endsWith('.svg')) && !this.imageFailed;
     },
     fallbackVisible() {

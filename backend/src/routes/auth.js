@@ -12,9 +12,9 @@ const entitlementReadRepository = new EntitlementReadRepository(db);
 const userService = new UserService({ userRepository, entitlementReadRepository });
 const authService = new AuthService({ userRepository, userService });
 
-authRouter.post('/auth/wechat-login', (req, res, next) => {
+authRouter.post('/auth/wechat-login', async (req, res, next) => {
   try {
-    res.json(authService.loginWithWechat(req.body || {}));
+    res.json(await authService.loginWithWechat(req.body || {}));
   } catch (error) {
     next(error);
   }

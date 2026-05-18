@@ -62,6 +62,7 @@ import { onShow } from '@dcloudio/uni-app';
 import packageService from '../../api/services/package';
 import orderService from '../../api/services/order';
 import userService from '../../api/services/user';
+import { payOrderWithWechat } from '../../utils/payment';
 import { DEFAULT_STORE_ID } from '../../utils/constants';
 import AppIcon from '../../components/common/AppIcon.vue';
 import AppBottomNav from '../../components/common/AppBottomNav.vue';
@@ -158,8 +159,13 @@ async function buyPackage(item) {
       storeId: DEFAULT_STORE_ID
     });
     const order = orderResult.order || orderResult;
-    const payResult = await orderService.mockPay(order.id, { payResult: 'success' });
-    entitlement.value = payResult.entitlement || entitlement.value;
+    const payResult = await payOrderWithWechat(order.id, orderResult.payment);
+    if (payResult.entitlement) {
+      entitlement.value = payResult.entitlement;
+    } else {
+      const me = await userService.getMe().catch(() => null);
+      entitlement.value = me?.entitlement || entitlement.value;
+    }
     paymentMessage.value = `${item.name} 支付成功，权益已更新`;
     uni.showToast({ title: '支付成功', icon: 'success' });
   } catch (error) {

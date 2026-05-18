@@ -13,6 +13,10 @@ export const orderService = {
     return http.post(`/orders/${orderId}/mock-pay`, payload);
   },
 
+  createWechatPayment(orderId) {
+    return http.post(`/orders/${orderId}/wechat-pay`, {});
+  },
+
   listOrders(params = {}) {
     return http.get('/orders', params);
   }
