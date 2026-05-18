@@ -114,13 +114,15 @@ export function loadMe() {
   return request('/me');
 }
 
-export function unlockDoor() {
-  return request('/access/unlock', {
+export function unlockDoor({ targetUserId = null, reason = 'merchant_web_remote' } = {}) {
+  return request('/merchant/access/unlock', {
     method: 'POST',
     body: {
       storeId: DEFAULT_STORE_ID,
       deviceId: DEFAULT_DEVICE_ID,
-      source: 'merchant_web'
+      source: 'merchant_web',
+      targetUserId,
+      reason
     }
   });
 }
@@ -129,5 +131,23 @@ export function refreshLongTermCode() {
   return request('/access/long-term-code/refresh', {
     method: 'POST',
     body: { storeId: DEFAULT_STORE_ID }
+  });
+}
+
+export function loadMerchantSeats() {
+  return request(`/merchant/stores/${DEFAULT_STORE_ID}/seats`);
+}
+
+export function updateMerchantSeatCode(seatId, code) {
+  return request(`/merchant/seats/${seatId}/code`, {
+    method: 'PATCH',
+    body: { code }
+  });
+}
+
+export function updateMerchantSeatStatus(seatId, status) {
+  return request(`/merchant/seats/${seatId}/status`, {
+    method: 'PATCH',
+    body: { status }
   });
 }

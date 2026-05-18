@@ -95,6 +95,53 @@ export class AccessService {
     };
   }
 
+
+  unlockByMerchant({ operatorId, targetUserId = null, storeId, deviceId = ACCESS_DEVICE_MAIN, reason = 'merchant_remote_unlock', clientContext = {} }) {
+    if (!storeId) throw badRequest('storeId 不能为空');
+    this.assertActiveStore(storeId);
+
+    const at = nowIso();
+    const requestedDeviceId = deviceId || ACCESS_DEVICE_MAIN;
+    const accessRepository = this.accessRepository;
+    const device = accessRepository.findActiveDevice({ storeId, deviceId: requestedDeviceId });
+    const actingUserId = targetUserId || operatorId;
+
+    if (!device) {
+      this.writeEvent({
+        userId: actingUserId,
+        storeId,
+        deviceId: null,
+        result: 'denied',
+        reason: 'device_unavailable',
+        at,
+        raw: { source: 'merchant_console', operatorId, reason, clientContext, requestedDeviceId },
+      });
+      throw accessDenied('门禁设备不可用', { storeId, deviceId: requestedDeviceId });
+    }
+
+    this.writeEvent({
+      userId: actingUserId,
+      storeId,
+      deviceId: requestedDeviceId,
+      result: 'granted',
+      reason: 'merchant_remote_unlock',
+      at,
+      raw: { source: 'merchant_console', operatorId, reason, clientContext, targetUserId },
+    });
+
+    return {
+      unlock: {
+        id: createId('unlock'),
+        status: 'granted',
+        storeId,
+        deviceId: requestedDeviceId,
+        targetUserId: actingUserId,
+        operatorId,
+        usableUntil: addMinutesIso(at, 5),
+        mock: true,
+      },
+    };
+  }
   getLongTermCode({ userId, storeId }) {
     if (!storeId) {
       throw badRequest('storeId 不能为空');

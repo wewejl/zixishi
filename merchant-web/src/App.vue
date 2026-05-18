@@ -9,7 +9,10 @@ import {
   loadStoreSummary,
   login,
   refreshLongTermCode,
-  unlockDoor
+  unlockDoor,
+  loadMerchantSeats,
+  updateMerchantSeatCode,
+  updateMerchantSeatStatus
 } from './api';
 
 const today = new Intl.DateTimeFormat('en-CA', {
@@ -34,6 +37,9 @@ const packages = ref([]);
 const profile = ref(null);
 const lastUnlock = ref(null);
 const newCode = ref(null);
+const seatCodeDrafts = ref({});
+const unlockTargetUserId = ref('');
+const unlockReason = ref('merchant_manual_unlock');
 
 const store = computed(() => storeSummary.value?.store || {});
 const metrics = computed(() => storeSummary.value?.metrics || {});
@@ -100,6 +106,8 @@ async function loadAll() {
 
     storeSummary.value = summary;
     availability.value = seatResult;
+    const merchantSeats = await loadMerchantSeats();
+    seatCodeDrafts.value = Object.fromEntries((merchantSeats.items || []).map((it) => [it.id, it.code]));
     reservations.value = reservationResult.items || [];
     orders.value = orderResult.items || [];
     packages.value = packageResult.items || [];
@@ -116,7 +124,10 @@ async function handleUnlock() {
   actionLoading.value = 'unlock';
   error.value = '';
   try {
-    const result = await unlockDoor();
+    const result = await unlockDoor({
+      targetUserId: unlockTargetUserId.value.trim() || null,
+      reason: unlockReason.value.trim() || 'merchant_manual_unlock'
+    });
     lastUnlock.value = result.unlock;
   } catch (err) {
     error.value = err.message || '开门失败';
@@ -133,6 +144,35 @@ async function handleRefreshCode() {
     newCode.value = result.code;
   } catch (err) {
     error.value = err.message || '通行码刷新失败';
+  } finally {
+    actionLoading.value = '';
+  }
+}
+
+
+async function saveSeatCode(seat) {
+  const nextCode = String(seatCodeDrafts.value[seat.id] || '').trim();
+  if (!nextCode) return;
+  actionLoading.value = `seat-code-${seat.id}`;
+  error.value = '';
+  try {
+    await updateMerchantSeatCode(seat.id, nextCode);
+    await loadAll();
+  } catch (err) {
+    error.value = err.message || '更新座位编码失败';
+  } finally {
+    actionLoading.value = '';
+  }
+}
+
+async function changeSeatStatus(seat, status) {
+  actionLoading.value = `seat-status-${seat.id}-${status}`;
+  error.value = '';
+  try {
+    await updateMerchantSeatStatus(seat.id, status);
+    await loadAll();
+  } catch (err) {
+    error.value = err.message || '更新座位状态失败';
   } finally {
     actionLoading.value = '';
   }
@@ -238,7 +278,6 @@ onMounted(loadAll);
             <span>使用中</span>
             <strong>{{ seatStats.occupied || metrics.studyingUserCount || 0 }}</strong>
             <small>实时会话</small>
-          </article>
           <article class="metric-card">
             <span>有效预约</span>
             <strong>{{ activeReservations.length }}</strong>
@@ -291,14 +330,20 @@ onMounted(loadAll);
                   <span>{{ areaSeats.length }} 座</span>
                 </div>
                 <div class="seat-grid">
-                  <button
+                  <div
                     v-for="seat in areaSeats"
                     :key="seat.id"
                     :class="seatClass(seat)"
                     :title="`${seat.code} ${statusText(seat.availabilityStatus)}`"
                   >
                     <span>{{ seat.code }}</span>
-                  </button>
+                    <input v-model="seatCodeDrafts[seat.id]" class="seat-code-input" />
+                    <div class="seat-actions">
+                      <button :disabled="actionLoading.startsWith('seat-')" @click="saveSeatCode(seat)">改编码</button>
+                      <button :disabled="actionLoading.startsWith('seat-')" @click="changeSeatStatus(seat, 'locked')">锁定</button>
+                      <button :disabled="actionLoading.startsWith('seat-')" @click="changeSeatStatus(seat, 'available')">启用</button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -309,6 +354,10 @@ onMounted(loadAll);
               <div class="panel-head compact">
                 <h2>门禁</h2>
                 <span>{{ lastUnlock ? statusText(lastUnlock.status) : '待操作' }}</span>
+              </div>
+              <div class="merchant-unlock-form">
+                <input v-model="unlockTargetUserId" placeholder="目标用户ID(可选)" />
+                <input v-model="unlockReason" placeholder="开门原因" />
               </div>
               <button class="primary-action" :disabled="actionLoading === 'unlock'" @click="handleUnlock">
                 {{ actionLoading === 'unlock' ? '开门中' : '远程开门' }}
@@ -389,3 +438,12 @@ onMounted(loadAll);
     </main>
   </div>
 </template>
+
+<style scoped>
+.seat-code-input{width:72px;font-size:12px;margin-top:4px;}
+.seat-actions{display:flex;gap:4px;flex-wrap:wrap;}
+.seat-actions button{font-size:10px;padding:2px 6px;}
+
+.merchant-unlock-form{display:flex;flex-direction:column;gap:6px;margin-bottom:8px;}
+.merchant-unlock-form input{padding:6px 8px;font-size:12px;border:1px solid #d0d7de;border-radius:6px;}
+</style>
